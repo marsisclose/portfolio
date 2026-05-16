@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jackson Blazek — Mechanical Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #050A12;
+    --bg2: #090F1C;
+    --bg3: #0D1628;
+    --surface: #111C30;
+    --surface2: #162035;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --accent: #3B82F6;
+    --accent2: #60A5FA;
+    --accent-dim: rgba(59,130,246,0.12);
+    --accent-glow: rgba(59,130,246,0.25);
+    --text: #E8EDF5;
+    --text2: #8A9AB8;
+    --text3: #4A5A78;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+    --green: #10B981;
+    --green-dim: rgba(16,185,129,0.12);
+    --amber: #F59E0B;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 64px;
+    background: rgba(5,10,18,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent2);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  section { position: relative; z-index: 1; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 2.5rem 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-inner { width: 100%; }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-name {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+
+  .hero-name span { color: var(--accent2); }
+
+  .hero-tagline {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text2);
+    max-width: 540px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .stat-item { display: flex; flex-direction: column; gap: 4px; }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  .hero-ctas { display: flex; gap: 1rem; align-items: center; }
+
+  .btn-primary {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--accent);
+    border: none;
+    padding: 14px 28px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  .btn-outline {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text2);
+    background: transparent;
+    border: 1px solid var(--border2);
+    padding: 14px 28px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover { color: var(--text); border-color: var(--accent); }
+
+  .hero-visual {
+    position: absolute;
+    right: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 380px;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .section-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 100px 2.5rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .section-num { font-family: var(--mono); font-size: 11px; color: var(--accent); }
+  .section-title { font-size: 2rem; font-weight: 700; letter-spacing: -0.01em; }
+  .section-line { flex: 1; height: 1px; background: var(--border); margin-left: 1rem; }
+
+  .exp-list { display: flex; flex-direction: column; gap: 1px; }
+
+  .exp-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .exp-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 0.2s;
+  }
+
+  .exp-item.featured::before { background: var(--accent); }
+  .exp-item:hover { background: var(--surface2); border-color: var(--border2); }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .exp-company { font-size: 1.2rem; font-weight: 700; color: var(--text); }
+
+  .exp-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+
+  .exp-badge.green { border-color: var(--green); color: var(--green); }
+
+  .exp-role { font-family: var(--mono); font-size: 12px; color: var(--accent2); margin-bottom: 0.5rem; }
+
+  .exp-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 1.25rem;
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .exp-bullets li {
+    font-size: 14px;
+    color: var(--text2);
+    padding-left: 1.2rem;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .exp-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--accent); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .skill-card { background: var(--surface); padding: 1.75rem; transition: background 0.2s; }
+  .skill-card:hover { background: var(--surface2); }
+
+  .skill-icon { font-family: var(--mono); font-size: 22px; color: var(--accent2); margin-bottom: 1rem; display: block; }
+  .skill-title { font-size: 14px; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: 0.02em; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .project-card { background: var(--surface); padding: 2rem; transition: background 0.2s; }
+  .project-card:hover { background: var(--surface2); }
+  .project-num { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-bottom: 1rem; }
+  .project-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.4; }
+  .project-desc { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 1.25rem; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .contact-text { font-size: 14px; color: var(--text2); line-height: 1.8; margin-bottom: 2rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 1px; }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .contact-link:hover { background: var(--surface2); border-color: var(--accent); color: var(--accent2); }
+
+  .contact-link-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    min-width: 70px;
+  }
+
+  .edu-box { background: var(--surface); border: 1px solid var(--border); padding: 2rem; }
+  .edu-school { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .edu-degree { font-family: var(--mono); font-size: 12px; color: var(--accent2); margin-bottom: 1rem; }
+  .edu-meta { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+
+  .edu-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    background: var(--accent-dim);
+    color: var(--accent2);
+    border: 1px solid rgba(59,130,246,0.2);
+  }
+
+  .edu-awards { font-size: 13px; color: var(--text2); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-text { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+  .footer-copy { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-inner > * { animation: fadeUp 0.7s ease forwards; opacity: 0; }
+  .hero-label { animation-delay: 0.1s; }
+  .hero-name { animation-delay: 0.2s; }
+  .hero-tagline { animation-delay: 0.3s; }
+  .hero-stats { animation-delay: 0.4s; }
+  .hero-ctas { animation-delay: 0.5s; }
+
+  .divider-line { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1.25rem; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 1.25rem 60px; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .section-wrap { padding: 60px 1.25rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-visual { display: none; }
+    .exp-item { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">JMB_v2026</a>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <span class="status-dot"></span>
+    SpaceX · Hawthorne, CA
+  </div>
+</nav>
+
+<section class="hero" style="position:relative; overflow:hidden;">
+  <div class="hero-inner">
+    <div class="hero-label">Mechanical Engineer · BS/ME Candidate · RIT '28</div>
+    <h1 class="hero-name">Jackson<br><span>Blazek</span></h1>
+    <p class="hero-tagline">Building flight-critical hardware for the most ambitious vehicles ever made — from Starship avionics to liquid rocket engines.</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-value">3.95</span>
+        <span class="stat-label">GPA</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">2+</span>
+        <span class="stat-label">Internships</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">320</span>
+        <span class="stat-label">lbf Engine Dev</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">'28</span>
+        <span class="stat-label">BS/ME Expected</span>
+      </div>
+    </div>
+    <div class="hero-ctas">
+      <a href="#experience" class="btn-primary">View Experience</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+  <svg class="hero-visual" viewBox="0 0 200 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 10 C60 60 40 160 40 250 L40 380 L100 420 L160 380 L160 250 C160 160 140 60 100 10Z" stroke="white" stroke-width="1.5" fill="none"/>
+    <path d="M40 300 L10 380 L40 360" stroke="white" stroke-width="1.5" fill="none"/>
+    <path d="M160 300 L190 380 L160 360" stroke="white" stroke-width="1.5" fill="none"/>
+    <circle cx="100" cy="120" r="20" stroke="white" stroke-width="1" fill="none"/>
+    <line x1="100" y1="420" x2="80" y2="480" stroke="white" stroke-width="1"/>
+    <line x1="100" y1="420" x2="100" y2="490" stroke="white" stroke-width="1.5"/>
+    <line x1="100" y1="420" x2="120" y2="480" stroke="white" stroke-width="1"/>
+  </svg>
+</section>
+
+<hr class="divider-line">
+
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Experience</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="exp-list">
+      <div class="exp-item featured">
+        <div class="exp-header">
+          <div>
+            <div class="exp-company">SpaceX</div>
+            <div class="exp-role">Starship Electronics Intern</div>
+          </div>
+          <span class="exp-badge">Current</span>
+        </div>
+        <div class="exp-meta">
+          <span>Hawthorne, CA</span>
+          <span>Jan 2026 – Present</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Led end-to-end mechanical integration of flight-critical avionics assemblies for Starship, driving design from concept to hardware release.</li>
+          <li>Designed and iterated avionics enclosures in Siemens NX, optimizing for vibration, thermal, and rapid-assembly constraints in high-rate production.</li>
+          <li>Evaluated and down-selected corrosion-resistant coating systems for Starship avionics hardware to inform flight qualification specifications.</li>
+          <li>Executed tolerance stack-up and CTE analyses alongside DFM reviews, reducing integration risk ahead of flight.</li>
+          <li>Integrated avionics across Starship flight systems with electrical, structures, and production teams to resolve compatibility requirements.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <div class="exp-company">Avidyne Corporation</div>
+            <div class="exp-role">Mechanical Engineering Co-op</div>
+          </div>
+          <span class="exp-badge green">Co-op</span>
+        </div>
+        <div class="exp-meta">
+          <span>Melbourne, FL</span>
+          <span>May 2025 – Dec 2025</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Designed mechanical integration of new PCB layouts into cockpit display assemblies using SolidWorks, improving design efficiency and reducing complexity.</li>
+          <li>Executed DO-160G environmental qualification testing across vibration, temperature, and shock conditions.</li>
+          <li>Validated adherence to RTCA standards including DO-160G, DO-186B, and DO-229D using DOORS for compliance tracking.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <div class="exp-company">RIT Launch Initiative</div>
+            <div class="exp-role">Propulsion Engineer</div>
+          </div>
+          <span class="exp-badge">Extracurricular</span>
+        </div>
+        <div class="exp-meta">
+          <span>Rochester, NY</span>
+          <span>Sep 2023 – Present</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Member of the Liquids Propulsion Team, designing thrust chambers and nozzle geometry for a 320 lbf liquid rocket engine (IPA/N₂O).</li>
+          <li>Conducts nozzle geometry, heat transfer, and combustion performance analyses for structural integrity at nominal conditions.</li>
+          <li>Previously served as Structures Engineer for Level 2 solid rockets — managed fin geometry, stability calcs, and aero performance for a 6,000 ft apogee vehicle.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider-line">
+
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Projects</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-num">PRJ_001 · Apr 2025</div>
+        <h3 class="project-title">Propeller Shaft Design for Nuclear-Powered Submarines</h3>
+        <p class="project-desc">Designed a propeller shaft satisfying torque, deflection, and fatigue constraints. Used MATLAB-based torsional, critical speed, and bearing load analysis to optimize material selection and geometry.</p>
+        <div class="project-tags">
+          <span class="tag">MATLAB</span>
+          <span class="tag">Fatigue Analysis</span>
+          <span class="tag">Stress Analysis</span>
+          <span class="tag">DFM</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-num">PRJ_002 · Dec 2023</div>
+        <h3 class="project-title">Lunar Lander Descent Simulation</h3>
+        <p class="project-desc">Developed a MATLAB simulation of lunar lander descent under varying thrust and mass conditions. Modeled kinematics and fuel consumption to achieve controlled touchdown while minimizing fuel usage.</p>
+        <div class="project-tags">
+          <span class="tag">MATLAB</span>
+          <span class="tag">Kinematics</span>
+          <span class="tag">Simulation</span>
+          <span class="tag">Optimization</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-num">PRJ_003 · Ongoing</div>
+        <h3 class="project-title">320 lbf Liquid Rocket Engine</h3>
+        <p class="project-desc">Contributing to nozzle and thrust chamber design for an IPA/N₂O liquid rocket engine. Analysis spans combustion performance, heat transfer, and structural integrity from concept through hot-fire testing.</p>
+        <div class="project-tags">
+          <span class="tag">Rocket Propulsion</span>
+          <span class="tag">CAD</span>
+          <span class="tag">Thermal Analysis</span>
+          <span class="tag">OpenRocket</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider-line">
+
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Skills</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <span class="skill-icon">⬡</span>
+        <div class="skill-title">CAD & Design</div>
+        <div class="skill-tags">
+          <span class="tag">Siemens NX</span>
+          <span class="tag">SolidWorks</span>
+          <span class="tag">Fusion 360</span>
+          <span class="tag">DFM</span>
+          <span class="tag">Tolerance Stack-up</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">◈</span>
+        <div class="skill-title">Analysis & Simulation</div>
+        <div class="skill-tags">
+          <span class="tag">MATLAB</span>
+          <span class="tag">Thermal Analysis</span>
+          <span class="tag">CTE Analysis</span>
+          <span class="tag">Fatigue</span>
+          <span class="tag">OpenRocket</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">▣</span>
+        <div class="skill-title">Fabrication</div>
+        <div class="skill-tags">
+          <span class="tag">Lathe</span>
+          <span class="tag">Mill</span>
+          <span class="tag">3D Printing</span>
+          <span class="tag">Laser Cutting</span>
+          <span class="tag">Soldering</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">◯</span>
+        <div class="skill-title">Standards & Tools</div>
+        <div class="skill-tags">
+          <span class="tag">DO-160G</span>
+          <span class="tag">DOORS</span>
+          <span class="tag">Arduino</span>
+          <span class="tag">RTCA</span>
+          <span class="tag">MS Office 365</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider-line">
+
+<section id="education">
+  <div class="section-wrap">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Education</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-box">
+      <div class="edu-school">Rochester Institute of Technology</div>
+      <div class="edu-degree">BS/ME in Mechanical Engineering · Minors: Music Performance, Electrical Engineering</div>
+      <div class="edu-meta">
+        <span class="edu-pill">GPA 3.95 / 4.0</span>
+        <span class="edu-pill">Honors Program</span>
+        <span class="edu-pill">Expected May 2028</span>
+      </div>
+      <div class="edu-awards">Presidential Scholar Award · Performing Arts Scholar Award · Dean's List 2023–2025</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider-line">
+
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <p class="contact-text">Currently interning at SpaceX in Hawthorne, CA. Open to conversations about future opportunities in aerospace engineering, avionics integration, and propulsion systems.</p>
+        <a href="resume.pdf" class="btn-primary" style="display:inline-block;">Download Resume</a>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:jmb7807@rit.edu" class="contact-link">
+          <span class="contact-link-label">Email</span>
+          jmb7807@rit.edu
+        </a>
+        <a href="tel:8455324113" class="contact-link">
+          <span class="contact-link-label">Phone</span>
+          (845) 532-4113
+        </a>
+        <a href="https://www.linkedin.com/in/jackson-blazek/" class="contact-link" target="_blank" rel="noopener">
+          <span class="contact-link-label">LinkedIn</span>
+          /in/jackson-blazek
+        </a>
+        <a href="#" class="contact-link">
+          <span class="contact-link-label">Location</span>
+          Hawthorne, CA · Kingston, NY
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider-line">
+
+<footer>
+  <span class="footer-text">JACKSON M. BLAZEK · MECHANICAL ENGINEER</span>
+  <span class="footer-copy">RIT '28 · © 2026</span>
+</footer>
+
+</body>
+</html>
