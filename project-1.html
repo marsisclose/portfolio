@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propeller Shaft Design — Jackson Blazek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #04080F;
+  --surface: #0A1220;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --accent: #4F8EF7;
+  --accent2: #7EB3FF;
+  --text: #F0F4FA;
+  --text2: #A8BAD0;
+  --text3: #6B80A0;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem; height: 60px;
+  background: rgba(4,8,15,0.82); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--mono); font-size: 12px; color: var(--text2); letter-spacing: 0.1em; text-decoration: none; }
+.nav-back { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+.nav-back:hover { color: var(--text2); }
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 2.5rem; }
+
+/* HERO */
+.project-hero { padding: 120px 0 60px; border-bottom: 1px solid var(--border); }
+.project-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+.project-title { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.1; margin-bottom: 1.5rem; }
+.project-meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); }
+.meta-val { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; color: var(--text3); border: 1px solid var(--border); padding: 3px 8px; }
+
+/* CONTENT */
+.project-body { padding: 4rem 0; }
+.project-body section { margin-bottom: 3.5rem; }
+.project-body section:last-child { margin-bottom: 0; }
+
+h2 {
+  font-family: var(--serif); font-size: 1.5rem; font-weight: 400;
+  color: var(--text); margin-bottom: 1rem;
+  padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
+}
+
+p { font-size: 15px; color: var(--text2); line-height: 1.8; font-weight: 300; margin-bottom: 1rem; }
+p:last-child { margin-bottom: 0; }
+
+ul.detail-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
+ul.detail-list li { font-size: 14px; color: var(--text2); padding-left: 1rem; position: relative; line-height: 1.65; font-weight: 300; }
+ul.detail-list li::before { content: '—'; position: absolute; left: 0; color: var(--border2); font-size: 12px; }
+
+/* MEDIA PLACEHOLDER */
+.media-placeholder {
+  background: var(--surface);
+  border: 1px dashed var(--border2);
+  border-radius: 2px;
+  padding: 3rem 2rem;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+.media-placeholder p {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text3); margin: 0;
+}
+.media-placeholder .media-hint { font-size: 11px; margin-top: 0.5rem; color: var(--border2); letter-spacing: 0.06em; }
+
+/* KEY RESULTS */
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--border); margin-top: 1rem; }
+.result-card { background: var(--surface); padding: 1.25rem 1.5rem; }
+.result-n { font-family: var(--serif); font-size: 2rem; color: var(--text); line-height: 1; margin-bottom: 0.3rem; }
+.result-l { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); }
+
+/* FOOTER NAV */
+.project-nav { border-top: 1px solid var(--border); padding: 2.5rem 0; display: flex; justify-content: space-between; align-items: center; }
+.proj-nav-link { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+.proj-nav-link:hover { color: var(--accent); }
+
+@media (max-width: 700px) {
+  nav { padding: 0 1.25rem; }
+  .wrap { padding: 0 1.25rem; }
+  .project-hero { padding: 100px 0 40px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">JB</a>
+  <a href="index.html#projects" class="nav-back">← All Projects</a>
+</nav>
+
+<div class="wrap">
+
+  <div class="project-hero">
+    <div class="project-eyebrow">PRJ 001 · Apr 2025 · MECE 350</div>
+    <h1 class="project-title">Propeller Shaft Design for Nuclear-Powered Submarines</h1>
+    <div class="project-meta">
+      <div class="meta-item"><span class="meta-label">Course</span><span class="meta-val">Strength of Materials II</span></div>
+      <div class="meta-item"><span class="meta-label">Tools</span><span class="meta-val">MATLAB</span></div>
+      <div class="meta-item"><span class="meta-label">Date</span><span class="meta-val">April 2025</span></div>
+    </div>
+    <div class="tags">
+      <span class="tag">MATLAB</span>
+      <span class="tag">Fatigue Analysis</span>
+      <span class="tag">Stress Analysis</span>
+      <span class="tag">Torsional Analysis</span>
+      <span class="tag">DFM</span>
+    </div>
+  </div>
+
+  <div class="project-body">
+
+    <section>
+      <h2>Overview</h2>
+      <p>Designed a propeller shaft for a nuclear-powered submarine to satisfy simultaneous torque, deflection, and fatigue constraints under operational loading conditions. The goal was to optimize material selection and shaft geometry while maintaining structural and dynamic integrity across the full operating envelope.</p>
+    </section>
+
+    <section>
+      <h2>Problem Statement</h2>
+      <p>Submarine propeller shafts operate under high sustained torque, bending loads from propeller weight and hydrodynamic forces, and fatigue cycling over decades of service. The design had to meet strict limits on:</p>
+      <ul class="detail-list">
+        <li>Maximum shear stress under full-power torque loading</li>
+        <li>Static deflection at the propeller end under combined loading</li>
+        <li>Fatigue life using a Goodman-based safety factor approach</li>
+        <li>Critical speed — avoiding resonance within the operating RPM range</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Approach</h2>
+      <p>Analysis was conducted entirely in MATLAB, building a parametric model that allowed rapid iteration across shaft diameter, material, and bearing placement. Key analyses included:</p>
+      <ul class="detail-list">
+        <li>Torsional stress and angle of twist calculations under peak torque</li>
+        <li>Beam deflection modeling with shaft treated as a simply-supported beam under distributed and point loads</li>
+        <li>Critical speed calculation using Rayleigh's method to identify resonance risk</li>
+        <li>Bearing reaction loads and contact stress verification</li>
+        <li>Fatigue analysis using the modified Goodman diagram with appropriate surface finish, stress concentration, and reliability correction factors</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Media</h2>
+      <div class="media-placeholder">
+        <p>MATLAB plots · stress diagrams · design charts</p>
+        <p class="media-hint">Add images or PDFs here</p>
+      </div>
+      <div class="media-placeholder">
+        <p>Technical report</p>
+        <p class="media-hint">Link your report PDF here</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Key Results</h2>
+      <div class="results-grid">
+        <div class="result-card">
+          <div class="result-n">2.4×</div>
+          <div class="result-l">Fatigue Safety Factor</div>
+        </div>
+        <div class="result-card">
+          <div class="result-n">&lt;0.1°</div>
+          <div class="result-l">Angle of Twist</div>
+        </div>
+        <div class="result-card">
+          <div class="result-n">4340</div>
+          <div class="result-l">Steel Selected</div>
+        </div>
+      </div>
+      <p style="margin-top:1.25rem;">Final shaft geometry met all stress, deflection, and fatigue constraints with margin, while the critical speed exceeded the operating range by a comfortable factor. Design charts produced in MATLAB provided clear sensitivity analysis for future design trades.</p>
+    </section>
+
+  </div>
+
+  <div class="project-nav">
+    <a href="index.html#projects" class="proj-nav-link">← Back to Projects</a>
+    <a href="project-2.html" class="proj-nav-link">Next Project →</a>
+  </div>
+
+</div>
+
+</body>
+</html>

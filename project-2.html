@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lunar Lander Simulation — Jackson Blazek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #04080F; --surface: #0A1220; --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11); --accent: #4F8EF7; --accent2: #7EB3FF;
+  --text: #F0F4FA; --text2: #A8BAD0; --text3: #6B80A0;
+  --mono: 'DM Mono', monospace; --sans: 'DM Sans', sans-serif; --serif: 'DM Serif Display', serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; height: 60px; background: rgba(4,8,15,0.82); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.nav-logo { font-family: var(--mono); font-size: 12px; color: var(--text2); letter-spacing: 0.1em; text-decoration: none; }
+.nav-back { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+.nav-back:hover { color: var(--text2); }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 2.5rem; }
+.project-hero { padding: 120px 0 60px; border-bottom: 1px solid var(--border); }
+.project-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+.project-title { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.1; margin-bottom: 1.5rem; }
+.project-meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); }
+.meta-val { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; color: var(--text3); border: 1px solid var(--border); padding: 3px 8px; }
+.project-body { padding: 4rem 0; }
+.project-body section { margin-bottom: 3.5rem; }
+.project-body section:last-child { margin-bottom: 0; }
+h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--text); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+p { font-size: 15px; color: var(--text2); line-height: 1.8; font-weight: 300; margin-bottom: 1rem; }
+p:last-child { margin-bottom: 0; }
+ul.detail-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
+ul.detail-list li { font-size: 14px; color: var(--text2); padding-left: 1rem; position: relative; line-height: 1.65; font-weight: 300; }
+ul.detail-list li::before { content: '—'; position: absolute; left: 0; color: var(--border2); font-size: 12px; }
+.media-placeholder { background: var(--surface); border: 1px dashed var(--border2); border-radius: 2px; padding: 3rem 2rem; text-align: center; margin: 1.5rem 0; }
+.media-placeholder p { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin: 0; }
+.media-placeholder .media-hint { font-size: 11px; margin-top: 0.5rem; color: var(--border2); letter-spacing: 0.06em; }
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--border); margin-top: 1rem; }
+.result-card { background: var(--surface); padding: 1.25rem 1.5rem; }
+.result-n { font-family: var(--serif); font-size: 2rem; color: var(--text); line-height: 1; margin-bottom: 0.3rem; }
+.result-l { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); }
+.project-nav { border-top: 1px solid var(--border); padding: 2.5rem 0; display: flex; justify-content: space-between; align-items: center; }
+.proj-nav-link { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+.proj-nav-link:hover { color: var(--accent); }
+@media (max-width: 700px) { nav { padding: 0 1.25rem; } .wrap { padding: 0 1.25rem; } .project-hero { padding: 100px 0 40px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">JB</a>
+  <a href="index.html#projects" class="nav-back">← All Projects</a>
+</nav>
+
+<div class="wrap">
+
+  <div class="project-hero">
+    <div class="project-eyebrow">PRJ 002 · Dec 2023 · MECE-117</div>
+    <h1 class="project-title">Lunar Lander Descent Simulation</h1>
+    <div class="project-meta">
+      <div class="meta-item"><span class="meta-label">Course</span><span class="meta-val">Intro to Coding for Engineers</span></div>
+      <div class="meta-item"><span class="meta-label">Tools</span><span class="meta-val">MATLAB</span></div>
+      <div class="meta-item"><span class="meta-label">Date</span><span class="meta-val">December 2023</span></div>
+    </div>
+    <div class="tags">
+      <span class="tag">MATLAB</span>
+      <span class="tag">Kinematics</span>
+      <span class="tag">Simulation</span>
+      <span class="tag">Optimization</span>
+      <span class="tag">Numerical Methods</span>
+    </div>
+  </div>
+
+  <div class="project-body">
+
+    <section>
+      <h2>Overview</h2>
+      <p>Developed a MATLAB simulation of a lunar lander during powered descent, modeling the vehicle's kinematics, thrust control, and fuel consumption from initial altitude through touchdown. The objective was to achieve a controlled soft landing while minimizing total fuel expenditure.</p>
+    </section>
+
+    <section>
+      <h2>Problem Statement</h2>
+      <p>Lunar descent is a constrained optimization problem: too little thrust and the lander impacts at unsafe velocity; too much and fuel runs out before touchdown. The simulation had to model:</p>
+      <ul class="detail-list">
+        <li>Variable thrust as a control input, affecting both deceleration and fuel burn rate</li>
+        <li>Decreasing vehicle mass as propellant is consumed (Tsiolkovsky rocket equation basis)</li>
+        <li>Lunar gravitational acceleration (1.62 m/s²) as the only acting body force</li>
+        <li>Terminal velocity constraint — soft landing defined as impact velocity below 2 m/s</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Approach</h2>
+      <p>The simulation used numerical integration (Euler method) to propagate the vehicle state — altitude, velocity, mass — through each time step. Key elements:</p>
+      <ul class="detail-list">
+        <li>Equations of motion derived from Newton's second law with variable mass</li>
+        <li>Thrust profile parameterized and swept across design space to minimize fuel use</li>
+        <li>Constraint checking at each time step for velocity and altitude bounds</li>
+        <li>Visualization of descent trajectory, velocity, and fuel remaining over time</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Media</h2>
+      <div class="media-placeholder">
+        <p>Descent trajectory plots · velocity vs. altitude · fuel consumption curves</p>
+        <p class="media-hint">Add MATLAB figures here</p>
+      </div>
+      <div class="media-placeholder">
+        <p>MATLAB source code</p>
+        <p class="media-hint">Link to GitHub or attach .m file</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Key Results</h2>
+      <div class="results-grid">
+        <div class="result-card">
+          <div class="result-n">&lt;2</div>
+          <div class="result-l">m/s Touchdown Velocity</div>
+        </div>
+        <div class="result-card">
+          <div class="result-n">1.62</div>
+          <div class="result-l">m/s² Lunar Gravity</div>
+        </div>
+        <div class="result-card">
+          <div class="result-n">Min</div>
+          <div class="result-l">Fuel Usage Achieved</div>
+        </div>
+      </div>
+      <p style="margin-top:1.25rem;">The optimized thrust profile achieved a soft touchdown within the velocity constraint while reducing fuel usage relative to a constant-thrust baseline. The project was an introduction to numerical simulation and engineering trade-off analysis.</p>
+    </section>
+
+  </div>
+
+  <div class="project-nav">
+    <a href="project-1.html" class="proj-nav-link">← Previous Project</a>
+    <a href="project-3.html" class="proj-nav-link">Next Project →</a>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -18,7 +18,7 @@
   --accent2: #7EB3FF;
   --text: #F0F4FA;
   --text2: #A8BAD0;
-  --text3: #5C7090;
+  --text3: #6B80A0;
   --mono: 'DM Mono', monospace;
   --sans: 'DM Sans', sans-serif;
   --serif: 'DM Serif Display', serif;
@@ -67,6 +67,8 @@ body {
   opacity: 0;
   transform: scale(0.96);
   transition: opacity 1s ease 0.2s, transform 1s ease 0.2s;
+  padding: 2rem 3rem;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 75%);
 }
 
 .intro-text.visible { opacity: 1; transform: scale(1); }
@@ -74,9 +76,13 @@ body {
 .intro-name {
   font-family: var(--serif);
   font-size: clamp(2.5rem, 6vw, 5rem);
-  color: #fff;
+  color: #F0F4FA;
   letter-spacing: -0.01em;
   margin-bottom: 0.5rem;
+  text-shadow:
+    0 0 60px rgba(0,0,0,1),
+    0 2px 20px rgba(0,0,0,0.9),
+    0 0 120px rgba(0,0,0,0.7);
 }
 
 .intro-sub {
@@ -84,7 +90,8 @@ body {
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.5);
+  text-shadow: 0 0 20px rgba(0,0,0,1), 0 2px 10px rgba(0,0,0,0.9);
 }
 
 .skip-btn {
@@ -284,42 +291,70 @@ section { position: relative; }
 
 .section-rule { flex: 1; height: 1px; background: var(--border); }
 
-/* EXPERIENCE */
-.exp-item {
-  display: grid;
-  grid-template-columns: 190px 1fr;
-  gap: 2rem;
-  padding: 2rem 0;
-  border-bottom: 1px solid var(--border);
+/* EXPERIENCE TIMELINE */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
 }
 
-.exp-item:first-child { border-top: 1px solid var(--border); }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--border2);
+}
+
+.tl-item {
+  position: relative;
+  padding: 0 0 3rem 2rem;
+}
+
+.tl-item:last-child { padding-bottom: 0; }
+
+.tl-dot {
+  position: absolute;
+  left: -1.95rem;
+  top: 7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  transition: border-color 0.2s;
+}
+
+.tl-dot.live {
+  border-color: var(--green);
+  background: rgba(52,211,153,0.15);
+}
+
+.tl-dot.live::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(52,211,153,0.2);
+}
+
+.tl-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+  flex-wrap: wrap;
+}
 
 .exp-company {
   font-family: var(--serif);
   font-size: 1.1rem;
   color: var(--text);
-  margin-bottom: 0.25rem;
-}
-
-.exp-role {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: 0.08em;
-  margin-bottom: 0.4rem;
-}
-
-.exp-date, .exp-loc {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text3);
-  letter-spacing: 0.04em;
 }
 
 .exp-badge {
-  display: inline-block;
-  margin-top: 0.75rem;
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.1em;
@@ -327,9 +362,28 @@ section { position: relative; }
   padding: 3px 8px;
   border: 1px solid var(--border2);
   color: var(--text3);
+  white-space: nowrap;
 }
 
 .exp-badge.live { border-color: rgba(52,211,153,0.3); color: var(--green); }
+
+.exp-role {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+
+.exp-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1.2rem;
+}
 
 .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
 
@@ -349,6 +403,23 @@ section { position: relative; }
   color: var(--border2);
   font-size: 12px;
 }
+
+/* PROJECT LINK */
+.project-link {
+  display: inline-block;
+  margin-top: 1rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(79,142,247,0.3);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.project-link:hover { color: var(--accent2); border-color: var(--accent2); }
 
 /* PROJECTS */
 .project-item {
@@ -550,7 +621,7 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
 
 <!-- INTRO -->
 <div id="intro" role="presentation" aria-hidden="true">
-  <video id="intro-video" src="intro.mp4" autoplay muted playsinline></video>
+  <video id="intro-video" src="intro.mp4" autoplay muted playsinline preload="auto"></video>
   <div class="intro-text" id="intro-text">
     <div class="intro-name">Jackson Blazek</div>
     <div class="intro-sub">Mechanical Engineer</div>
@@ -579,7 +650,7 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
     <div class="hero-inner">
       <div class="hero-eyebrow fade-up">Mechanical Engineer · RIT BS/ME '28</div>
       <h1 class="hero-name fade-up">Jackson<br><em>Blazek</em></h1>
-      <p class="hero-bio fade-up">Building flight-critical hardware at SpaceX. From Starship avionics integration to liquid rocket propulsion — I design for the hardest environments imaginable.</p>
+      <p class="hero-bio fade-up">Mechanical engineering student at RIT, currently interning at SpaceX on Starship avionics. Previously at Avidyne on DO-160G-certified cockpit displays. Working toward a BS/ME with a 3.95 GPA.</p>
       <div class="hero-ctas fade-up">
         <a href="#experience" class="btn btn-solid">View Work</a>
         <a href="#contact" class="btn btn-ghost">Get in Touch</a>
@@ -611,53 +682,65 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
       <div class="section-rule"></div>
     </div>
 
-    <div class="exp-item fade-up">
-      <div>
-        <div class="exp-company">SpaceX</div>
+    <div class="timeline">
+
+      <div class="tl-item fade-up">
+        <div class="tl-dot live"></div>
+        <div class="tl-header">
+          <div class="exp-company">SpaceX</div>
+          <span class="exp-badge live">Current</span>
+        </div>
         <div class="exp-role">Starship Electronics Intern</div>
-        <div class="exp-date">Jan 2026 – Present</div>
-        <div class="exp-loc">Hawthorne, CA</div>
-        <span class="exp-badge live">Current</span>
+        <div class="exp-meta">
+          <span>Jan 2026 – Present</span>
+          <span>Hawthorne, CA</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Led end-to-end mechanical integration of flight-critical avionics assemblies for Starship, driving design from concept to hardware release.</li>
+          <li>Designed and iterated avionics enclosures in Siemens NX, optimizing for vibration, thermal, and rapid-assembly constraints in high-rate production.</li>
+          <li>Evaluated and down-selected corrosion-resistant coating systems for Starship avionics hardware to inform flight qualification specifications.</li>
+          <li>Executed tolerance stack-up and CTE analyses alongside DFM reviews, reducing integration risk ahead of flight.</li>
+          <li>Integrated avionics across Starship flight systems in collaboration with electrical, structures, and production teams.</li>
+        </ul>
       </div>
-      <ul class="exp-bullets">
-        <li>Led end-to-end mechanical integration of flight-critical avionics assemblies for Starship, driving design from concept to hardware release.</li>
-        <li>Designed and iterated avionics enclosures in Siemens NX, optimizing for vibration, thermal, and rapid-assembly constraints in high-rate production.</li>
-        <li>Evaluated and down-selected corrosion-resistant coating systems for Starship avionics hardware to inform flight qualification specifications.</li>
-        <li>Executed tolerance stack-up and CTE analyses alongside DFM reviews, reducing integration risk ahead of flight.</li>
-        <li>Integrated avionics across Starship flight systems in collaboration with electrical, structures, and production teams.</li>
-      </ul>
-    </div>
 
-    <div class="exp-item fade-up">
-      <div>
-        <div class="exp-company">Avidyne</div>
+      <div class="tl-item fade-up">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <div class="exp-company">Avidyne</div>
+          <span class="exp-badge">Co-op</span>
+        </div>
         <div class="exp-role">Mechanical Engineering Co-op</div>
-        <div class="exp-date">May – Dec 2025</div>
-        <div class="exp-loc">Melbourne, FL</div>
-        <span class="exp-badge">Co-op</span>
+        <div class="exp-meta">
+          <span>May – Dec 2025</span>
+          <span>Melbourne, FL</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Designed mechanical integration of new PCB layouts into cockpit display assemblies using SolidWorks, improving design efficiency and reducing complexity.</li>
+          <li>Executed DO-160G environmental qualification testing across vibration, temperature, and shock conditions.</li>
+          <li>Validated adherence to RTCA standards including DO-160G, DO-186B, and DO-229D using DOORS.</li>
+        </ul>
       </div>
-      <ul class="exp-bullets">
-        <li>Designed mechanical integration of new PCB layouts into cockpit display assemblies using SolidWorks, improving design efficiency and reducing complexity.</li>
-        <li>Executed DO-160G environmental qualification testing across vibration, temperature, and shock conditions.</li>
-        <li>Validated adherence to RTCA standards including DO-160G, DO-186B, and DO-229D using DOORS.</li>
-      </ul>
-    </div>
 
-    <div class="exp-item fade-up">
-      <div>
-        <div class="exp-company">RIT Launch Initiative</div>
+      <div class="tl-item fade-up">
+        <div class="tl-dot live"></div>
+        <div class="tl-header">
+          <div class="exp-company">RIT Launch Initiative</div>
+          <span class="exp-badge live">Ongoing</span>
+        </div>
         <div class="exp-role">Propulsion Engineer</div>
-        <div class="exp-date">Sep 2023 – Present</div>
-        <div class="exp-loc">Rochester, NY</div>
-        <span class="exp-badge">Team</span>
+        <div class="exp-meta">
+          <span>Sep 2023 – Present</span>
+          <span>Rochester, NY</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Liquids Propulsion Team — thrust chamber and nozzle design for a 320 lbf IPA/N₂O liquid rocket engine.</li>
+          <li>Conducts nozzle geometry, heat transfer, and combustion performance analyses for structural integrity at nominal conditions.</li>
+          <li>Previously Structures Engineer for Level 2 solid rockets — fin geometry, stability, and aero performance for a 6,000 ft apogee vehicle.</li>
+        </ul>
       </div>
-      <ul class="exp-bullets">
-        <li>Liquids Propulsion Team — thrust chamber and nozzle design for a 320 lbf IPA/N₂O liquid rocket engine.</li>
-        <li>Conducts nozzle geometry, heat transfer, and combustion performance analyses for structural integrity at nominal conditions.</li>
-        <li>Previously Structures Engineer for Level 2 solid rockets — fin geometry, stability, and aero performance for a 6,000 ft apogee vehicle.</li>
-      </ul>
+
     </div>
-  </div>
 </section>
 
 <!-- PROJECTS -->
@@ -680,6 +763,7 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
           <span class="tag">Stress Analysis</span>
           <span class="tag">DFM</span>
         </div>
+        <a href="project-1.html" class="project-link">View Project →</a>
       </div>
     </div>
 
@@ -693,6 +777,7 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
           <span class="tag">Kinematics</span>
           <span class="tag">Simulation</span>
         </div>
+        <a href="project-2.html" class="project-link">View Project →</a>
       </div>
     </div>
 
@@ -707,6 +792,7 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
           <span class="tag">CAD</span>
           <span class="tag">OpenRocket</span>
         </div>
+        <a href="project-3.html" class="project-link">View Project →</a>
       </div>
     </div>
   </div>
@@ -794,7 +880,7 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
   <div class="wrap">
     <div class="contact-wrap">
       <div class="contact-intro fade-up">
-        Let's build something<br><em>that leaves the atmosphere.</em>
+        Get in touch.
       </div>
 
       <div class="contact-links fade-up">
@@ -841,19 +927,52 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
 
   // Show name text halfway through
   video.addEventListener('timeupdate', () => {
-    if (video.currentTime >= video.duration * 0.4) {
+    if (video.duration && video.currentTime >= video.duration * 0.4) {
       introText.classList.add('visible');
     }
   });
 
   // Dismiss when video ends
-  video.addEventListener('ended', () => {
-    setTimeout(dismiss, 300);
-  });
+  video.addEventListener('ended', () => setTimeout(dismiss, 300));
 
-  // Fallback: dismiss after 6s in case video doesn't load
-  const fallback = setTimeout(dismiss, 6000);
+  // Hard fallback — dismiss after 7s no matter what
+  const fallback = setTimeout(dismiss, 7000);
   video.addEventListener('ended', () => clearTimeout(fallback));
+
+  // Force play — handle browsers that block autoplay
+  video.muted = true;
+  video.playsInline = true;
+
+  const playPromise = video.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      // Autoplay blocked — show a click-to-start overlay
+      introText.classList.add('visible');
+      const tap = document.createElement('div');
+      tap.style.cssText = `
+        position:absolute; inset:0; z-index:20; display:flex;
+        flex-direction:column; align-items:center; justify-content:center; cursor:pointer;
+      `;
+      const hint = document.createElement('div');
+      hint.style.cssText = `
+        font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.2em;
+        text-transform:uppercase; color:rgba(255,255,255,0.4); margin-top:8rem;
+        animation: blink 1.5s infinite;
+      `;
+      hint.textContent = 'Tap to begin';
+      tap.appendChild(hint);
+      intro.appendChild(tap);
+
+      const style = document.createElement('style');
+      style.textContent = `@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }`;
+      document.head.appendChild(style);
+
+      tap.addEventListener('click', () => {
+        tap.remove();
+        video.play().then(() => {}).catch(dismiss);
+      });
+    });
+  }
 
   skipBtn.addEventListener('click', dismiss);
 })();
