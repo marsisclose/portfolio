@@ -16,9 +16,9 @@
   --border2: rgba(255,255,255,0.11);
   --accent: #4F8EF7;
   --accent2: #7EB3FF;
-  --text: #E6ECF5;
-  --text2: #7A8DAA;
-  --text3: #3D4F68;
+  --text: #F0F4FA;
+  --text2: #A8BAD0;
+  --text3: #5C7090;
   --mono: 'DM Mono', monospace;
   --sans: 'DM Sans', sans-serif;
   --serif: 'DM Serif Display', serif;
@@ -52,7 +52,13 @@ body {
 
 #intro.fade-out { opacity: 0; pointer-events: none; }
 
-#starfield { position: absolute; inset: 0; }
+#intro-video {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
 .intro-text {
   position: relative;
@@ -544,7 +550,7 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
 
 <!-- INTRO -->
 <div id="intro" role="presentation" aria-hidden="true">
-  <canvas id="starfield"></canvas>
+  <video id="intro-video" src="intro.mp4" autoplay muted playsinline></video>
   <div class="intro-text" id="intro-text">
     <div class="intro-name">Jackson Blazek</div>
     <div class="intro-sub">Mechanical Engineer</div>
@@ -821,71 +827,35 @@ footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
 </footer>
 
 <script>
-// STARFIELD WARP INTRO
+// VIDEO INTRO
 (function() {
-  const canvas = document.getElementById('starfield');
-  const ctx = canvas.getContext('2d');
   const intro = document.getElementById('intro');
+  const video = document.getElementById('intro-video');
   const introText = document.getElementById('intro-text');
   const skipBtn = document.getElementById('skip-btn');
-  let W, H, stars = [], animId, start = null;
-  const NUM = 280, DURATION = 3400;
-
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-
-  function mkStar() {
-    return { x: (Math.random() - 0.5) * 2, y: (Math.random() - 0.5) * 2, z: Math.random() };
-  }
-
-  function init() {
-    resize();
-    stars = Array.from({ length: NUM }, mkStar);
-  }
-
-  function draw(ts) {
-    if (!start) start = ts;
-    const prog = Math.min((ts - start) / DURATION, 1);
-
-    ctx.fillStyle = 'rgba(2,5,8,0.22)';
-    ctx.fillRect(0, 0, W, H);
-
-    const speed = 0.003 + prog * 0.065;
-
-    for (let s of stars) {
-      s.z -= speed;
-      if (s.z <= 0) { Object.assign(s, mkStar()); s.z = 1; }
-      const px = (s.x / s.z) * W * 0.5 + W * 0.5;
-      const py = (s.y / s.z) * H * 0.5 + H * 0.5;
-      const r = Math.max(0.2, (1 - s.z) * 2.8);
-      const a = Math.min(1, (1 - s.z) * 1.5);
-      ctx.beginPath();
-      ctx.arc(px, py, r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${150 + Math.floor(s.z * 80)},${180 + Math.floor(s.z * 50)},255,${a})`;
-      ctx.fill();
-    }
-
-    if (prog > 0.38) introText.classList.add('visible');
-
-    if (prog < 1) {
-      animId = requestAnimationFrame(draw);
-    } else {
-      setTimeout(dismiss, 350);
-    }
-  }
 
   function dismiss() {
-    cancelAnimationFrame(animId);
     intro.classList.add('fade-out');
     setTimeout(() => { intro.style.display = 'none'; }, 850);
   }
 
+  // Show name text halfway through
+  video.addEventListener('timeupdate', () => {
+    if (video.currentTime >= video.duration * 0.4) {
+      introText.classList.add('visible');
+    }
+  });
+
+  // Dismiss when video ends
+  video.addEventListener('ended', () => {
+    setTimeout(dismiss, 300);
+  });
+
+  // Fallback: dismiss after 6s in case video doesn't load
+  const fallback = setTimeout(dismiss, 6000);
+  video.addEventListener('ended', () => clearTimeout(fallback));
+
   skipBtn.addEventListener('click', dismiss);
-  window.addEventListener('resize', resize);
-  init();
-  animId = requestAnimationFrame(draw);
 })();
 
 // SCROLL FADE-IN
